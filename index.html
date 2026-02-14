@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Valeria ❤️</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body{
+    margin:0;
+    background: linear-gradient(-45deg, #ff4d6d, #ff8fab, #c9184a, #590d22);
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
+    color:white;
+    text-align:center;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x:hidden;
+}
+
+@keyframes gradient {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* Carta animada */
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:10;
+}
+
+.carta{
+    background:white;
+    color:#c9184a;
+    padding:40px;
+    border-radius:20px;
+    max-width:400px;
+    animation: abrir 1s ease forwards;
+    transform:scale(0);
+}
+
+@keyframes abrir{
+    to{ transform:scale(1); }
+}
+
+.carta button{
+    margin-top:20px;
+    padding:10px 20px;
+    border:none;
+    background:#ff4d6d;
+    color:white;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* Contenido */
+.container{
+    padding:40px 20px;
+}
+
+h1{
+    font-size:50px;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow{
+    from{text-shadow:0 0 10px #fff;}
+    to{text-shadow:0 0 25px #ffccd5;}
+}
+
+.time-counter{
+    font-size:24px;
+    margin:20px 0;
+    font-weight:bold;
+}
+
+/* Botón música */
+button{
+    padding:12px 25px;
+    margin:15px;
+    background:white;
+    border:none;
+    color:#c9184a;
+    cursor:pointer;
+    border-radius:30px;
+    font-size:18px;
+}
+
+/* Carrusel */
+.carousel{
+    width:300px;
+    height:350px;
+    margin:40px auto;
+    overflow:hidden;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+.carousel img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:none;
+}
+
+.carousel img.active{
+    display:block;
+}
+
+/* Corazones */
+.heart{
+    position:absolute;
+    color:white;
+    font-size:20px;
+    animation: float 5s linear infinite;
+}
+
+@keyframes float{
+    0%{transform:translateY(100vh);opacity:1;}
+    100%{transform:translateY(-10vh);opacity:0;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Carta -->
+<div class="overlay" id="overlay">
+    <div class="carta">
+        <h2>Para ti, Valeria 💌</h2>
+        <p>
+            Desde el 26 de septiembre de 2022 cambiaste mi vida.  
+            Gracias por estos años llenos de amor.  
+            Siempre tú, mi amor ❤️
+        </p>
+        <button onclick="cerrarCarta()">Abrir sorpresa 💖</button>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Valeria ❤️</h1>
+
+    <div class="time-counter" id="timeTogether"></div>
+
+    <p>
+        Eres el amor de mi vida, mi lugar seguro y mi felicidad diaria.
+        Te amo más de lo que las palabras pueden explicar.
+    </p>
+
+    <button id="toggle-audio">
+        <i id="audio-icon" class="fa-solid fa-volume-high"></i> Música
+    </button>
+
+    <h2>Nuestros Recuerdos 📸</h2>
+
+    <div class="carousel">
+        <img src="foto1.jpg" class="active">
+        <img src="foto2.jpg">
+        <img src="foto3.jpg">
+        <img src="foto4.jpg">
+    </div>
+
+</div>
+
+<audio id="music" src="tu-cancion.mp3"></audio>
+
+<script>
+
+// Carta
+function cerrarCarta(){
+    document.getElementById("overlay").style.display="none";
+}
+
+// Calcular tiempo juntos
+const startDate = new Date(2022, 8, 26); // septiembre es 8 porque empieza en 0
+const now = new Date();
+
+let years = now.getFullYear() - startDate.getFullYear();
+let months = now.getMonth() - startDate.getMonth();
+let days = now.getDate() - startDate.getDate();
+
+if(days < 0){
+    months--;
+}
+if(months < 0){
+    years--;
+    months += 12;
+}
+
+document.getElementById("timeTogether").innerText =
+`💖 Llevamos ${years} años, ${months} meses juntos 💖`;
+
+// Música
+const audio = document.getElementById("music");
+const btnAudio = document.getElementById("toggle-audio");
+const icon = document.getElementById("audio-icon");
+
+btnAudio.addEventListener("click", () => {
+    if(audio.paused){
+        audio.play();
+        icon.classList.replace("fa-volume-high","fa-volume-xmark");
+    } else {
+        audio.pause();
+        icon.classList.replace("fa-volume-xmark","fa-volume-high");
+    }
+});
+
+// Carrusel automático
+let slides = document.querySelectorAll(".carousel img");
+let index = 0;
+
+setInterval(() => {
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+}, 3000);
+
+// Corazones
+function crearCorazon(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),5000);
+}
+
+setInterval(crearCorazon, 300);
+
+</script>
+
+</body>
+</html>
